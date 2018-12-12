@@ -2,6 +2,8 @@
 
 > dot editor project
 
+URL: https://bundai223.github.io/dot-editor
+
 ## Build Setup
 
 ``` bash
