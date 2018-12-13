@@ -1,11 +1,16 @@
 <template>
   <div class="main">
-    editor
+    <Grid />
   </div>
 </template>
 <script>
-export default {
+import Grid from './Grid'
 
+export default {
+  name: 'Editor',
+  components: {
+    Grid
+  }
 }
 </script>
 <style lang="scss" scoped>
