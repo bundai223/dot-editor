@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 // import Hello from '@/components/Hello'
-import Bezier from '@/components/Bezier'
+import Editor from '@/components/Editor'
 
 Vue.use(Router)
 
@@ -10,8 +10,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Bezier',
-      component: Bezier
+      name: 'Editor',
+      component: Editor
     }
   ]
 })
