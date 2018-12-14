@@ -2,9 +2,9 @@
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" :width='width' :height='height'>
       <template v-for='(_x, x) in gridNumW'>
         <template v-for='(_y, y) in gridNumH'>
-          <rect :x='gridSize * x' :y='gridSize * y' :width='gridSize' :height='gridSize' :rx='0' :ry='0' :fill='color(x, y)' :stroke='stroke' :stroke-width='lineWidth' v-on:mousemove='draw(x, y)'/>
-          <text :x='gridSize * x' :y='gridSize * (y + 1)' font-size='8' v-if='viewNo'>{{ gridIndex(x, y) }}</text>
-          <text :x='gridSize * x' :y='gridSize * (y + 1)' font-size='8' v-if='viewPalleteNo'>{{ grid(x, y)['pallete']}}</text>
+          <rect :x='gridSize * x' :y='gridSize * y' :width='gridSize' :height='gridSize' :rx='0' :ry='0' :fill='color(x, y)' :stroke='stroke' :stroke-width='lineWidth' v-on:click='draw(x, y)' v-on:mousemove='draw(x, y)'/>
+          <text :x='gridSize * x' :y='gridSize * (y + 1)' font-size='8' v-if='showGridNo'>{{ gridIndex(x, y) }}</text>
+          <text :x='gridSize * x' :y='gridSize * (y + 1)' font-size='8' v-if='showPalleteNo'>{{ grid(x, y)['pallete']}}</text>
         </template>
       </template>
     </svg>
@@ -22,10 +22,10 @@ export default {
   },
 
   computed: {
-    viewNo: function () {
+    showGridNo: function () {
       return this.no
     },
-    viewPalleteNo: function () {
+    showPalleteNo: function () {
       return this.pallete
     },
     gridSize: function () {
