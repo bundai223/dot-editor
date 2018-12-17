@@ -1,8 +1,8 @@
 <template>
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" :width='width' :height='height'>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" :width='width' :height='height' v-on:mousedown='drawStart' v-on:mouseup='drawEnd' v-on:mousemove='draw' ref='grid'>
       <template v-for='(_x, x) in gridNumW'>
         <template v-for='(_y, y) in gridNumH'>
-          <rect :x='gridSize * x' :y='gridSize * y' :width='gridSize' :height='gridSize' :rx='0' :ry='0' :fill='color(x, y)' :stroke='stroke' :stroke-width='lineWidth' v-on:click='draw(x, y)' v-on:mousemove='draw(x, y)'/>
+          <rect :x='gridSize * x' :y='gridSize * y' :width='gridSize' :height='gridSize' :rx='0' :ry='0' :fill='color(x, y)' :stroke='stroke' :stroke-width='lineWidth' v-on:click='draw(x, y)'/>
           <text :x='gridSize * x' :y='gridSize * (y + 1)' font-size='8' v-if='showGridNo'>{{ gridIndex(x, y) }}</text>
           <text :x='gridSize * x' :y='gridSize * (y + 1)' font-size='8' v-if='showPalleteNo'>{{ grid(x, y)['pallete']}}</text>
         </template>
@@ -11,11 +11,31 @@
 </template>
 
 <script>
+class Dot {
+  constructor (x, y, size) {
+    this.x = x
+    this.y = y
+    this.size = size
+    this.palleteNo = -1
+  }
+  draw (palleteNo) {
+    this.palleteNo = palleteNo
+  }
+  color () {
+    if (this.palleteNo === -1) {
+      return 'none'
+    } else {
+      return '#ffff00'
+    }
+  }
+}
+
 export default {
   data: function () {
     return {
       stroke: '#000000',
       griddata: [],
+      drawing: false,
       no: false,
       pallete: false
     }
@@ -45,6 +65,9 @@ export default {
     },
     lineWidth: function () {
       return 1
+    },
+    currentPalleteNo: function () {
+      return 1
     }
   },
   methods: {
@@ -56,26 +79,40 @@ export default {
       return this.griddata[index]
     },
     color: function (x, y) {
-      var pallete = this.grid(x, y)['pallete']
-      if (pallete === -1) {
-        return 'none'
-      } else {
-        return '#ffff00'
-      }
+      return this.grid(x, y).color()
     },
-    draw: function (x, y) {
-      this.grid(x, y)['pallete'] = 1
-      console.log(`${x}, ${y}`)
+    drawStart: function (eventObject) {
+      this.drawing = true
+    },
+    drawEnd: function (eventObject) {
+      this.drawing = false
+    },
+    draw: function (eventObject) {
+      if (!(eventObject.buttons & 1)) {
+        return
+      }
+
+      var x = eventObject.clientX
+      var y = eventObject.clientY
+      // this.grid(x, y)['pallete'] = this.currentPalleteNo
+      console.log(`${eventObject.buttons}: ${x}, ${y}`)
+    },
+    createGrid: function () {
+      var griddata = new Array(this.gridNumW * this.gridNumH)
+      for (let y = 0; y < this.gridNumH; ++y) {
+        for (let x = 0; x < this.gridNumW; ++x) {
+          griddata[this.gridIndex(x, y)] = new Dot(
+            this.gridSize * x,
+            this.gridSize * y,
+            this.gridSize
+          )
+        }
+      }
+      this.griddata = griddata
     }
   },
   created: function () {
-    var griddata = new Array(this.gridNumW * this.gridNumH)
-    for (let x = 0; x < this.gridNumW; ++x) {
-      for (let y = 0; y < this.gridNumH; ++y) {
-        griddata[this.gridIndex(x, y)] = { pallete: -1 }
-      }
-    }
-    this.griddata = griddata
+    this.createGrid()
   }
 }
 </script>
