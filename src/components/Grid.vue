@@ -7,6 +7,7 @@
           <text :x='gridSize * x' :y='gridSize * (y + 1)' font-size='8' v-if='showPalleteNo'>{{ grid(x, y)['pallete']}}</text>
         </template>
       </template>
+      <line v-if='drawing' :x1='drag_start.x' :y1='drag_start.y' :x2='drag_now.x' :y2='drag_now.y' stroke="black" stroke-width="1"/>
     </svg>
 </template>
 
@@ -30,6 +31,13 @@ class Dot {
   }
 }
 
+class Vec2 {
+  constructor (x, y) {
+    this.x = x
+    this.y = y
+  }
+}
+
 export default {
   data: function () {
     return {
@@ -37,7 +45,9 @@ export default {
       griddata: [],
       drawing: false,
       no: false,
-      pallete: false
+      pallete: false,
+      drag_start: null,
+      drag_now: null
     }
   },
 
@@ -83,19 +93,21 @@ export default {
     },
     drawStart: function (eventObject) {
       this.drawing = true
+      this.drag_start = new Vec2(eventObject.clientX, eventObject.clientY)
+      this.drag_now = this.drag_start.clone
     },
     drawEnd: function (eventObject) {
       this.drawing = false
+      this.drag_start = null
+      this.drag_now = null
     },
     draw: function (eventObject) {
       if (!(eventObject.buttons & 1)) {
         return
       }
 
-      var x = eventObject.clientX
-      var y = eventObject.clientY
       // this.grid(x, y)['pallete'] = this.currentPalleteNo
-      console.log(`${eventObject.buttons}: ${x}, ${y}`)
+      this.drag_now = new Vec2(eventObject.clientX, eventObject.clientY)
     },
     createGrid: function () {
       var griddata = new Array(this.gridNumW * this.gridNumH)
