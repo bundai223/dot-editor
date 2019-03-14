@@ -12,31 +12,8 @@
 </template>
 
 <script>
-class Dot {
-  constructor (x, y, size) {
-    this.x = x
-    this.y = y
-    this.size = size
-    this.palleteNo = -1
-  }
-  draw (palleteNo) {
-    this.palleteNo = palleteNo
-  }
-  color () {
-    if (this.palleteNo === -1) {
-      return 'none'
-    } else {
-      return '#ffff00'
-    }
-  }
-}
-
-class Vec2 {
-  constructor (x, y) {
-    this.x = x
-    this.y = y
-  }
-}
+import Vec2 from './scripts/Vec2.js'
+import Dot from './scripts/Dot.js'
 
 export default {
   data: function () {
@@ -92,14 +69,14 @@ export default {
       return this.grid(x, y).color()
     },
     drawStart: function (eventObject) {
-      this.drawing = true
       this.drag_start = new Vec2(eventObject.clientX, eventObject.clientY)
-      this.drag_now = this.drag_start.clone
+      this.drag_now = this.drag_start.clone()
+      this.drawing = true
     },
     drawEnd: function (eventObject) {
-      this.drawing = false
       this.drag_start = null
       this.drag_now = null
+      this.drawing = false
     },
     draw: function (eventObject) {
       if (!(eventObject.buttons & 1)) {
