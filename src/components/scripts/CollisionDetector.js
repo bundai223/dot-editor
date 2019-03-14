@@ -1,5 +1,5 @@
-import Vec2 from './Vec2.js'
-import * as col from './Collider.js'
+// import Vec2 from './Vec2.js'
+// import * as Collider from './Collider.js'
 
 export class CollisionDetector {
   constructor () {
@@ -7,17 +7,17 @@ export class CollisionDetector {
   }
 
   add (collider) {
-    this._colliders.push (collider)
+    this._colliders.push(collider)
   }
 
   traverse (collider) {
-    var detected = []
-    this._colliders.map(elm => {
-      return this.test (collider, elm)
+    var detected = this._colliders.map(elm => {
+      return this.test(collider, elm)
     })
+    return (detected.length > 0)
   }
 
-  test (collider, collider) {
+  test (target, collider) {
     return false
   }
 }
