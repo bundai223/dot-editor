@@ -1,4 +1,4 @@
-FROM node:8.14.0-alpine
+FROM node:11.12.0-alpine
 
 RUN apk add --update \
             udev \
@@ -7,7 +7,7 @@ RUN apk add --update \
 
 RUN mkdir /noto
 
-ADD https://noto-website.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip /noto 
+ADD https://noto-website.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip /noto
 
 WORKDIR /noto
 
