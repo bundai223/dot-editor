@@ -20,4 +20,4 @@ RUN unzip NotoSansCJKjp-hinted.zip && \
 RUN mkdir /app
 WORKDIR /app
 COPY . /app
-RUN npm install
+RUN yarn install
